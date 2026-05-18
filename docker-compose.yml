@@ -1,0 +1,46 @@
+services:
+  # --- POSTGRESQL (Banco de Dados) ---
+  db:
+    container_name: sga-banco
+    image: postgres:15-alpine
+    env_file:
+      - postgres.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - rede-sga
+    restart: always
+    # Healthcheck: Garante que o banco aceita conexões
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  # --- API Flask (API Restful do Backend) ---
+  api:
+    container_name: sga-api
+    build:
+      context: .
+    ports:
+      - "5000:5000"
+    networks:
+      - rede-sga
+    depends_on:
+      db:
+        condition: service_healthy # Espera o DB estar pronto
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  postgres_data:
+
+networks:
+  rede-sga:
+    driver: bridge
