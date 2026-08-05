@@ -3,7 +3,7 @@
 from datetime import date, datetime, timezone
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Date, DateTime, text
+from sqlalchemy import String, Date, DateTime, Boolean, text
 
 from helpers.database import db, bcrypt
 
@@ -15,7 +15,9 @@ paciente_fields = {
     'nome': fields.String,
     'email': fields.String,
     'telefone': fields.String,
-    'data_nascimento': fields.String
+    'data_nascimento': fields.String,
+    'gestante': fields.Boolean,
+    'possui_deficiencia': fields.Boolean
 }
 
 class Paciente(db.Model):
@@ -27,6 +29,8 @@ class Paciente(db.Model):
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=True)
     telefone: Mapped[str] = mapped_column(String(15), unique=True, nullable=False)
     data_nascimento: Mapped[date] = mapped_column(Date, nullable=False)
+    gestante: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    possui_deficiencia: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=text('CURRENT_TIMESTAMP'))
     updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=text('CURRENT_TIMESTAMP'), onupdate=datetime.now(timezone.utc))
 
@@ -39,12 +43,18 @@ class Paciente(db.Model):
     )
     agendamentos = relationship("Agendamento", back_populates="paciente")
 
-    def __init__(self, cpf: str, nome: str, email: str, telefone: str, data_nascimento: date):
+    def __init__(
+        self, cpf: str, nome: str, email: str, telefone: str,
+        data_nascimento: date, gestante: bool = False,
+        possui_deficiencia: bool = False,
+    ):
         self.cpf = cpf
         self.nome = nome
         self.email = email
         self.telefone = telefone
         self.data_nascimento = data_nascimento
+        self.gestante = gestante
+        self.possui_deficiencia = possui_deficiencia
 
     def __repr__(self):
         return f"<paciente(nome='{self.nome}', telefone='{self.telefone}', data_nascimento='{self.data_nascimento}')>"

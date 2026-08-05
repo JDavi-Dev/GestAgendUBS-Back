@@ -24,6 +24,12 @@ def _validar_cadastro(dados, senha):
     return None
 
 
+def _booleano(valor):
+    if isinstance(valor, bool):
+        return valor
+    return str(valor).strip().lower() in {'true', '1', 'sim'}
+
+
 def _mensagem_integridade(error):
     texto = str(getattr(error, 'orig', error)).lower()
     if 'tb_paciente_cpf_key' in texto or ('cpf' in texto and 'unique' in texto):
@@ -78,6 +84,8 @@ class PacientesResouce(Resource):
             return erro
 
         paciente_data['email'] = paciente_data['email'].strip().lower()
+        paciente_data['gestante'] = _booleano(paciente_data.get('gestante', False))
+        paciente_data['possui_deficiencia'] = _booleano(paciente_data.get('possui_deficiencia', False))
 
         try:
             duplicado = db.session.execute(
@@ -179,6 +187,10 @@ class PacienteResource(Resource):
 
         if 'email' in paciente_data and '@' not in str(paciente_data['email']):
             return {"mensagem": "Informe um e-mail válido contendo '@'."}, 400
+
+        for campo in ('gestante', 'possui_deficiencia'):
+            if campo in paciente_data:
+                paciente_data[campo] = _booleano(paciente_data[campo])
 
         try:
             paciente = db.session.execute(db.select(Paciente).filter_by(id=id)).scalar_one_or_none()

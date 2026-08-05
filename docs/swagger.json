@@ -2005,7 +2005,7 @@
           "Fila de Espera"
         ],
         "summary": "Entrar na fila",
-        "description": "Apenas paciente. A prioridade é calculada automaticamente; pacientes com 60 anos ou mais recebem prioridade alta.",
+        "description": "Apenas paciente. A prioridade é calculada automaticamente; pacientes com 60 anos ou mais recebem prioridade alta, enquanto gestantes ou pessoas com deficiência recebem prioridade média.",
         "responses": {
           "201": {
             "description": "Entrada criada.",
@@ -2692,6 +2692,14 @@
             "type": "string",
             "format": "date",
             "example": "1990-05-20"
+          },
+          "gestante": {
+            "type": "boolean",
+            "default": false
+          },
+          "possui_deficiencia": {
+            "type": "boolean",
+            "default": false
           }
         },
         "required": [
@@ -2735,6 +2743,14 @@
             "format": "password",
             "example": "Senha@123",
             "minLength": 8
+          },
+          "gestante": {
+            "type": "boolean",
+            "default": false
+          },
+          "possui_deficiencia": {
+            "type": "boolean",
+            "default": false
           }
         },
         "required": [

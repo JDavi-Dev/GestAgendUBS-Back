@@ -683,7 +683,7 @@ paths:
       - Fila de Espera
       summary: Entrar na fila
       description: Apenas paciente. A prioridade é calculada automaticamente; pacientes com 60 anos ou mais recebem
-        prioridade alta.
+        prioridade alta, enquanto gestantes ou pessoas com deficiência recebem prioridade média.
       responses:
         '201':
           description: Entrada criada.
@@ -909,6 +909,12 @@ components:
           type: string
           format: date
           example: '1990-05-20'
+        gestante:
+          type: boolean
+          default: false
+        possui_deficiencia:
+          type: boolean
+          default: false
       required:
       - id
       - cpf
@@ -938,6 +944,12 @@ components:
           type: string
           format: date
           example: '1990-05-20'
+        gestante:
+          type: boolean
+          default: false
+        possui_deficiencia:
+          type: boolean
+          default: false
         senha:
           type: string
           format: password

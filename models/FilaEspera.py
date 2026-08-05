@@ -64,7 +64,7 @@ class FilaEspera(db.Model):
         """
         Calcula a prioridade baseada nos critérios:
         - Prioridade 1 (Alta): idade >= 60 anos
-        - Prioridade 2 (Média): gestante ou cadeirante (futuro)
+        - Prioridade 2 (Média): gestante ou pessoa com deficiência
         - Prioridade 3 (Baixa): demais pacientes
         """
         from datetime import date
@@ -77,9 +77,8 @@ class FilaEspera(db.Model):
         
         if idade >= 60:
             return 1  # Alta prioridade
-        # Futuro: adicionar campos como 'gestante' ou 'cadeirante' no model Paciente
-        # if paciente.gestante or paciente.cadeirante:
-        #     return 2
+        if paciente.gestante or paciente.possui_deficiencia:
+            return 2  # Média prioridade
         return 3  # Baixa prioridade
 
     @staticmethod
