@@ -1,0 +1,32 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 2
+  nome:
+    type: string
+    example: Dr. João Souza
+  registro:
+    type: string
+    example: CRM-CE-12345
+  especialidade:
+    type: string
+    example: Clínica Geral
+  telefone:
+    type: string
+    nullable: true
+    example: '85988888888'
+  email:
+    type: string
+    format: email
+    nullable: true
+    example: joao@ubs.local
+  ativo:
+    type: boolean
+    example: true
+required:
+- id
+- nome
+- registro
+- especialidade
+- ativo

@@ -1,0 +1,11 @@
+type: object
+properties:
+  login:
+    type: string
+    description: CPF do paciente ou e-mail do profissional/administrador.
+  senha:
+    type: string
+    format: password
+required:
+- login
+- senha

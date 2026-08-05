@@ -1,0 +1,6 @@
+type: object
+properties:
+  mensagem:
+    type: string
+required:
+- mensagem

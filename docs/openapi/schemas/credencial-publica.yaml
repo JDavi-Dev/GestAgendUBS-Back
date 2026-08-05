@@ -1,0 +1,16 @@
+type: object
+properties:
+  id:
+    type: integer
+  login:
+    type: string
+  tipo:
+    type: string
+    enum:
+    - paciente
+    - profissional
+    - administrador
+  referencia_id:
+    type: integer
+  ativo:
+    type: boolean

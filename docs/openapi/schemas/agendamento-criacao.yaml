@@ -1,0 +1,11 @@
+type: object
+properties:
+  paciente_id:
+    type: integer
+    example: 1
+  horario_id:
+    type: integer
+    example: 10
+required:
+- paciente_id
+- horario_id

@@ -1,0 +1,130 @@
+/profissionais:
+  get:
+    tags:
+    - Profissionais
+    summary: Listar profissionais
+    description: Permitido para pacientes e administradores autenticados.
+    responses:
+      '200':
+        description: Lista.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Profissional'
+      '401': &id003
+        description: Não autenticado ou credenciais inválidas.
+        content:
+          application/json:
+            schema: &id001
+              $ref: '#/components/schemas/Mensagem'
+      '403': &id005
+        description: Acesso negado.
+        content:
+          application/json:
+            schema: *id001
+      '500': &id002
+        description: Erro interno ou problema com o banco de dados.
+        content:
+          application/json:
+            schema: *id001
+    security: &id004
+    - bearerAuth: []
+  post:
+    tags:
+    - Profissionais
+    summary: Cadastrar profissional
+    description: A implementação atual não exige token. A credencial usa o e-mail como login.
+    responses:
+      '201':
+        description: Profissional criado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profissional'
+      '400':
+        description: Requisição inválida.
+        content:
+          application/json:
+            schema: *id001
+      '500': *id002
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProfissionalCriacao'
+/profissional/{id}:
+  get:
+    tags:
+    - Profissionais
+    summary: Obter profissional por ID
+    description: ''
+    responses:
+      '200':
+        description: Profissional encontrado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profissional'
+      '401': *id003
+      '404': &id006
+        description: Recurso não encontrado.
+        content:
+          application/json:
+            schema: *id001
+      '500': *id002
+    security: *id004
+    parameters:
+    - &id007
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  put:
+    tags:
+    - Profissionais
+    summary: Atualizar profissional
+    description: Apenas administrador.
+    responses:
+      '200':
+        description: Profissional atualizado.
+        content:
+          application/json:
+            schema: *id001
+      '401': *id003
+      '403': *id005
+      '404': *id006
+      '500': *id002
+    security: *id004
+    parameters:
+    - *id007
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+  delete:
+    tags:
+    - Profissionais
+    summary: Excluir profissional
+    description: Apenas administrador; remove também sua credencial.
+    responses:
+      '200':
+        description: Profissional removido.
+        content:
+          application/json:
+            schema: *id001
+      '401': *id003
+      '403': *id005
+      '404': *id006
+      '500': *id002
+    security: *id004
+    parameters:
+    - *id007

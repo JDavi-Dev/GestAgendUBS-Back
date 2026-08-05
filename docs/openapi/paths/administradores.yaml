@@ -1,0 +1,110 @@
+/administradores:
+  get:
+    tags:
+    - Administradores
+    summary: Listar administradores
+    description: Apenas administrador.
+    responses:
+      '200':
+        description: Lista.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Administrador'
+      '401': &id003
+        description: Não autenticado ou credenciais inválidas.
+        content:
+          application/json:
+            schema: &id001
+              $ref: '#/components/schemas/Mensagem'
+      '403':
+        description: Acesso negado.
+        content:
+          application/json:
+            schema: *id001
+      '500': &id002
+        description: Erro interno ou problema com o banco de dados.
+        content:
+          application/json:
+            schema: *id001
+    security: &id004
+    - bearerAuth: []
+  post:
+    tags:
+    - Administradores
+    summary: Cadastrar administrador
+    description: A implementação atual não exige token e permite criar o administrador inicial.
+    responses:
+      '201':
+        description: Administrador criado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Administrador'
+      '400':
+        description: Requisição inválida.
+        content:
+          application/json:
+            schema: *id001
+      '500': *id002
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdministradorCriacao'
+/administrador/{id}:
+  get:
+    tags:
+    - Administradores
+    summary: Obter administrador por ID
+    description: ''
+    responses:
+      '200':
+        description: Administrador encontrado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Administrador'
+      '401': *id003
+      '404': &id005
+        description: Recurso não encontrado.
+        content:
+          application/json:
+            schema: *id001
+      '500': *id002
+    security: *id004
+    parameters:
+    - &id006
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  put:
+    tags:
+    - Administradores
+    summary: Atualizar administrador
+    description: A implementação atual não possui decorador de autenticação nesta operação.
+    responses:
+      '200':
+        description: Administrador atualizado.
+        content:
+          application/json:
+            schema: *id001
+      '404': *id005
+      '500': *id002
+    security: []
+    parameters:
+    - *id006
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true

@@ -1,0 +1,13 @@
+type: object
+properties:
+  status:
+    type: string
+    enum:
+    - agendado
+    - confirmado
+    - cancelado
+    - realizado
+    - falta
+  motivo_cancelamento:
+    type: string
+    nullable: true

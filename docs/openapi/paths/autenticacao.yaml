@@ -1,0 +1,70 @@
+/login:
+  post:
+    tags:
+    - Autenticação
+    summary: Realizar login
+    description: Autentica por CPF (paciente) ou e-mail (profissional/administrador). Limitado a 5 tentativas por
+      minuto.
+    responses:
+      '200':
+        description: Login realizado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginResposta'
+      '400':
+        description: Requisição inválida.
+        content:
+          application/json:
+            schema: &id001
+              $ref: '#/components/schemas/Mensagem'
+      '401': &id002
+        description: Não autenticado ou credenciais inválidas.
+        content:
+          application/json:
+            schema: *id001
+      '500': &id003
+        description: Erro interno ou problema com o banco de dados.
+        content:
+          application/json:
+            schema: *id001
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Login'
+/refresh:
+  post:
+    tags:
+    - Autenticação
+    summary: Renovar access token
+    description: Exige o refresh token no cabeçalho Authorization.
+    responses:
+      '200':
+        description: Token renovado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshResposta'
+      '401': *id002
+      '500': *id003
+    security:
+    - refreshToken: []
+/logout:
+  post:
+    tags:
+    - Autenticação
+    summary: Encerrar sessão
+    description: Revoga o access token atual, adicionando seu JTI à blacklist.
+    responses:
+      '200':
+        description: Logout realizado.
+        content:
+          application/json:
+            schema: *id001
+      '401': *id002
+      '500': *id003
+    security:
+    - bearerAuth: []

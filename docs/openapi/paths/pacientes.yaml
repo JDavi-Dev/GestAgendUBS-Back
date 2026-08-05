@@ -1,0 +1,130 @@
+/pacientes:
+  get:
+    tags:
+    - Pacientes
+    summary: Listar pacientes
+    description: Administrador vê todos; paciente vê apenas seu próprio cadastro; profissional recebe 403.
+    responses:
+      '200':
+        description: Lista de pacientes.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Paciente'
+      '401': &id003
+        description: Não autenticado ou credenciais inválidas.
+        content:
+          application/json:
+            schema: &id001
+              $ref: '#/components/schemas/Mensagem'
+      '403': &id005
+        description: Acesso negado.
+        content:
+          application/json:
+            schema: *id001
+      '500': &id002
+        description: Erro interno ou problema com o banco de dados.
+        content:
+          application/json:
+            schema: *id001
+    security: &id004
+    - bearerAuth: []
+  post:
+    tags:
+    - Pacientes
+    summary: Cadastrar paciente
+    description: Rota pública. A credencial é criada usando o CPF como login.
+    responses:
+      '201':
+        description: Paciente criado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Paciente'
+      '400':
+        description: Requisição inválida.
+        content:
+          application/json:
+            schema: *id001
+      '500': *id002
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PacienteCriacao'
+/paciente/{id}:
+  get:
+    tags:
+    - Pacientes
+    summary: Obter paciente por ID
+    description: ''
+    responses:
+      '200':
+        description: Paciente encontrado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Paciente'
+      '401': *id003
+      '404': &id006
+        description: Recurso não encontrado.
+        content:
+          application/json:
+            schema: *id001
+      '500': *id002
+    security: *id004
+    parameters:
+    - &id007
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  put:
+    tags:
+    - Pacientes
+    summary: Atualizar o próprio paciente
+    description: Apenas paciente autenticado, e o ID deve ser igual ao referencia_id do token.
+    responses:
+      '200':
+        description: Paciente atualizado.
+        content:
+          application/json:
+            schema: *id001
+      '401': *id003
+      '403': *id005
+      '404': *id006
+      '500': *id002
+    security: *id004
+    parameters:
+    - *id007
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+  delete:
+    tags:
+    - Pacientes
+    summary: Excluir paciente
+    description: Apenas administrador. Também remove a credencial associada.
+    responses:
+      '200':
+        description: Paciente removido.
+        content:
+          application/json:
+            schema: *id001
+      '401': *id003
+      '403': *id005
+      '404': *id006
+      '500': *id002
+    security: *id004
+    parameters:
+    - *id007

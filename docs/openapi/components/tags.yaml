@@ -1,0 +1,8 @@
+- name: Autenticação
+- name: Pacientes
+- name: Profissionais
+- name: Administradores
+- name: Horários
+- name: Agendamentos
+- name: Fila de Espera
+- name: Dashboard

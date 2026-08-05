@@ -1,0 +1,31 @@
+BadRequest:
+  description: Requisição inválida.
+  content:
+    application/json:
+      schema: &id001
+        $ref: '#/components/schemas/Mensagem'
+Unauthorized:
+  description: Não autenticado ou credenciais inválidas.
+  content:
+    application/json:
+      schema: *id001
+Forbidden:
+  description: Acesso negado.
+  content:
+    application/json:
+      schema: *id001
+NotFound:
+  description: Recurso não encontrado.
+  content:
+    application/json:
+      schema: *id001
+Conflict:
+  description: Conflito com o estado atual do recurso.
+  content:
+    application/json:
+      schema: *id001
+InternalError:
+  description: Erro interno ou problema com o banco de dados.
+  content:
+    application/json:
+      schema: *id001

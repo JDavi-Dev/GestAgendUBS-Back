@@ -1,0 +1,28 @@
+type: object
+properties:
+  nome:
+    type: string
+  registro:
+    type: string
+  especialidade:
+    type: string
+  telefone:
+    type: string
+    nullable: true
+  email:
+    type: string
+    format: email
+  ativo:
+    type: boolean
+    default: true
+  senha:
+    type: string
+    format: password
+    minLength: 8
+required:
+- nome
+- registro
+- especialidade
+- email
+- ativo
+- senha

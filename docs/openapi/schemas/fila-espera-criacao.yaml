@@ -1,0 +1,7 @@
+type: object
+properties:
+  especialidade:
+    type: string
+    example: Cardiologia
+required:
+- especialidade

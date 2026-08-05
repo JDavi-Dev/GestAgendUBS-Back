@@ -1,0 +1,10 @@
+bearerAuth:
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Access token JWT.
+refreshToken:
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Refresh token JWT, usado somente em /refresh.

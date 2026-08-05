@@ -1,0 +1,105 @@
+/dashboard/geral:
+  get:
+    tags:
+    - Dashboard
+    summary: Obter dashboard geral
+    description: Apenas administrador.
+    responses:
+      '200':
+        description: Dashboard.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardGeral'
+      '400': &id002
+        description: Requisição inválida.
+        content:
+          application/json:
+            schema: &id001
+              $ref: '#/components/schemas/Mensagem'
+      '401': &id003
+        description: Não autenticado ou credenciais inválidas.
+        content:
+          application/json:
+            schema: *id001
+      '403': &id004
+        description: Acesso negado.
+        content:
+          application/json:
+            schema: *id001
+      '500': &id005
+        description: Erro interno ou problema com o banco de dados.
+        content:
+          application/json:
+            schema: *id001
+    security: &id006
+    - bearerAuth: []
+    parameters: &id007
+    - &id008
+      name: data_inicio
+      in: query
+      schema:
+        type: string
+        format: date
+      description: 'Padrão: 30 dias antes da data atual.'
+    - &id009
+      name: data_fim
+      in: query
+      schema:
+        type: string
+        format: date
+      description: 'Padrão: data atual.'
+/dashboard/relatorio/faltas:
+  get:
+    tags:
+    - Dashboard
+    summary: Gerar relatório de faltas
+    description: Apenas administrador.
+    responses:
+      '200':
+        description: Relatório.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelatorioFaltas'
+      '400': *id002
+      '401': *id003
+      '403': *id004
+      '500': *id005
+    security: *id006
+    parameters: *id007
+/dashboard/relatorio/agendamentos:
+  get:
+    tags:
+    - Dashboard
+    summary: Gerar relatório de agendamentos
+    description: Apenas administrador.
+    responses:
+      '200':
+        description: Relatório.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelatorioAgendamentos'
+      '400': *id002
+      '401': *id003
+      '403': *id004
+      '500': *id005
+    security: *id006
+    parameters:
+    - *id008
+    - *id009
+    - name: status
+      in: query
+      schema:
+        type: string
+        enum:
+        - agendado
+        - confirmado
+        - cancelado
+        - realizado
+        - falta
+    - name: profissional_id
+      in: query
+      schema:
+        type: integer

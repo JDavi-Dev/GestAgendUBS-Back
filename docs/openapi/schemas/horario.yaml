@@ -1,0 +1,30 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 10
+  profissional_id:
+    type: integer
+    example: 2
+  data:
+    type: string
+    format: date
+    example: '2026-08-10'
+  hora_inicio:
+    type: string
+    format: time
+    example: 08:00:00
+  hora_fim:
+    type: string
+    format: time
+    example: 08:30:00
+  disponivel:
+    type: boolean
+    example: true
+required:
+- id
+- profissional_id
+- data
+- hora_inicio
+- hora_fim
+- disponivel

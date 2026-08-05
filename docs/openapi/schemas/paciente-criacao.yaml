@@ -1,0 +1,33 @@
+type: object
+properties:
+  cpf:
+    type: string
+    minLength: 11
+    maxLength: 11
+    example: '12345678901'
+  nome:
+    type: string
+    example: Maria da Silva
+  email:
+    type: string
+    format: email
+  telefone:
+    type: string
+    maxLength: 15
+    example: '85999999999'
+  data_nascimento:
+    type: string
+    format: date
+    example: '1990-05-20'
+  senha:
+    type: string
+    format: password
+    minLength: 8
+    example: Senha@123
+required:
+- cpf
+- nome
+- email
+- telefone
+- data_nascimento
+- senha

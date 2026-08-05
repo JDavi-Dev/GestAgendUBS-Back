@@ -1,0 +1,49 @@
+type: object
+properties:
+  id:
+    type: integer
+  paciente_id:
+    type: integer
+  paciente_nome:
+    type: string
+    nullable: true
+  especialidade:
+    type: string
+  prioridade:
+    type: integer
+    enum:
+    - 1
+    - 2
+    - 3
+  prioridade_label:
+    type: string
+    enum:
+    - Alta
+    - Média
+    - Baixa
+  data_solicitacao:
+    type: string
+    format: date-time
+  status:
+    type: string
+    enum:
+    - aguardando
+    - alocado
+    - cancelado
+    - recusado
+  mensagem_status:
+    type: string
+    nullable: true
+  updated_at:
+    type: string
+    format: date-time
+  posicao:
+    type: integer
+    nullable: true
+required:
+- id
+- paciente_id
+- especialidade
+- prioridade
+- data_solicitacao
+- status

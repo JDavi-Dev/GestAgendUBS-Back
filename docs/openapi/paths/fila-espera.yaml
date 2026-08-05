@@ -1,0 +1,163 @@
+/fila-espera:
+  get:
+    tags:
+    - Fila de Espera
+    summary: Listar fila de espera
+    description: Paciente vê os próprios itens; profissional vê a própria especialidade; administrador vê todos.
+    responses:
+      '200':
+        description: Fila.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/FilaEspera'
+      '400': &id002
+        description: Requisição inválida.
+        content:
+          application/json:
+            schema: &id001
+              $ref: '#/components/schemas/Mensagem'
+      '401': &id003
+        description: Não autenticado ou credenciais inválidas.
+        content:
+          application/json:
+            schema: *id001
+      '500': &id004
+        description: Erro interno ou problema com o banco de dados.
+        content:
+          application/json:
+            schema: *id001
+    security: &id005
+    - bearerAuth: []
+    parameters:
+    - name: especialidade
+      in: query
+      schema:
+        type: string
+    - name: status
+      in: query
+      schema:
+        type: string
+        default: aguardando
+        enum:
+        - aguardando
+        - alocado
+        - cancelado
+  post:
+    tags:
+    - Fila de Espera
+    summary: Entrar na fila
+    description: Apenas paciente. A prioridade é calculada automaticamente; pacientes com 60 anos ou mais recebem
+      prioridade alta.
+    responses:
+      '201':
+        description: Entrada criada.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilaEspera'
+      '400': *id002
+      '401': *id003
+      '403': &id006
+        description: Acesso negado.
+        content:
+          application/json:
+            schema: *id001
+      '404': &id007
+        description: Recurso não encontrado.
+        content:
+          application/json:
+            schema: *id001
+      '409': &id008
+        description: Conflito com o estado atual do recurso.
+        content:
+          application/json:
+            schema: *id001
+      '500': *id004
+    security: *id005
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FilaEsperaCriacao'
+/fila-espera/{id}:
+  put:
+    tags:
+    - Fila de Espera
+    summary: Atualizar item da fila
+    description: Administrador pode alocar/cancelar; a operação pode criar agendamento quando um horário for informado,
+      conforme implementação.
+    responses:
+      '200':
+        description: Item atualizado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilaEspera'
+      '400': *id002
+      '401': *id003
+      '403': *id006
+      '404': *id007
+      '409': *id008
+      '500': *id004
+    security: *id005
+    parameters:
+    - &id009
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+  delete:
+    tags:
+    - Fila de Espera
+    summary: Remover item da fila
+    description: Paciente pode remover o próprio item; administrador pode remover qualquer item.
+    responses:
+      '200':
+        description: Item removido.
+        content:
+          application/json:
+            schema: *id001
+      '401': *id003
+      '403': *id006
+      '404': *id007
+      '500': *id004
+    security: *id005
+    parameters:
+    - *id009
+/fila-espera/posicao:
+  get:
+    tags:
+    - Fila de Espera
+    summary: Consultar posição do paciente
+    description: Retorna a posição do paciente autenticado, opcionalmente filtrada por especialidade.
+    responses:
+      '200':
+        description: Posição calculada.
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      '401': *id003
+      '403': *id006
+      '404': *id007
+      '500': *id004
+    security: *id005
+    parameters:
+    - name: especialidade
+      in: query
+      schema:
+        type: string

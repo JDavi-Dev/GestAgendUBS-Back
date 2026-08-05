@@ -1,0 +1,14 @@
+type: object
+properties:
+  periodo:
+    $ref: '#/components/schemas/Periodo'
+  filtros:
+    type: object
+    additionalProperties: true
+  total:
+    type: integer
+  agendamentos:
+    type: array
+    items:
+      type: object
+      additionalProperties: true

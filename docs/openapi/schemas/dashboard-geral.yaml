@@ -1,0 +1,13 @@
+type: object
+properties:
+  periodo:
+    $ref: '#/components/schemas/Periodo'
+  resumo_geral:
+    type: object
+    additionalProperties: true
+  metricas_agendamentos:
+    type: object
+    additionalProperties: true
+  tendencias:
+    type: object
+    additionalProperties: true

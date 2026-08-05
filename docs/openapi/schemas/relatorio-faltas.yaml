@@ -1,0 +1,11 @@
+type: object
+properties:
+  periodo:
+    $ref: '#/components/schemas/Periodo'
+  total_faltas:
+    type: integer
+  faltas:
+    type: array
+    items:
+      type: object
+      additionalProperties: true

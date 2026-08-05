@@ -1,0 +1,6 @@
+type: object
+properties:
+  mensagem:
+    type: string
+  access_token:
+    type: string

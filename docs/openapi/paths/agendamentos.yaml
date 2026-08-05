@@ -1,0 +1,156 @@
+/agendamentos:
+  get:
+    tags:
+    - Agendamentos
+    summary: Listar agendamentos
+    description: Paciente vê os próprios; profissional vê os vinculados aos seus horários; administrador pode filtrar
+      livremente.
+    responses:
+      '200':
+        description: Lista.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Agendamento'
+      '401': &id002
+        description: Não autenticado ou credenciais inválidas.
+        content:
+          application/json:
+            schema: &id001
+              $ref: '#/components/schemas/Mensagem'
+      '500': &id003
+        description: Erro interno ou problema com o banco de dados.
+        content:
+          application/json:
+            schema: *id001
+    security: &id004
+    - bearerAuth: []
+    parameters:
+    - name: paciente_id
+      in: query
+      schema:
+        type: integer
+    - name: profissional_id
+      in: query
+      schema:
+        type: integer
+    - name: status
+      in: query
+      schema:
+        type: string
+        enum:
+        - agendado
+        - confirmado
+        - cancelado
+        - realizado
+        - falta
+  post:
+    tags:
+    - Agendamentos
+    summary: Criar agendamento
+    description: Apenas paciente. O horário deve existir e estar disponível. Impede conflito do paciente no mesmo
+      instante.
+    responses:
+      '201':
+        description: Agendamento criado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Agendamento'
+      '401': *id002
+      '403': &id006
+        description: Acesso negado.
+        content:
+          application/json:
+            schema: *id001
+      '404': &id005
+        description: Recurso não encontrado.
+        content:
+          application/json:
+            schema: *id001
+      '409': &id007
+        description: Conflito com o estado atual do recurso.
+        content:
+          application/json:
+            schema: *id001
+      '500': *id003
+    security: *id004
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgendamentoCriacao'
+/agendamento/{id}:
+  get:
+    tags:
+    - Agendamentos
+    summary: Obter agendamento por ID
+    description: ''
+    responses:
+      '200':
+        description: Agendamento encontrado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Agendamento'
+      '401': *id002
+      '404': *id005
+      '500': *id003
+    security: *id004
+    parameters:
+    - &id008
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  put:
+    tags:
+    - Agendamentos
+    summary: Atualizar agendamento
+    description: Paciente só pode alterar o próprio; profissional apenas os de seus horários. Cancelamento exige
+      24 horas de antecedência e libera o horário.
+    responses:
+      '200':
+        description: Agendamento atualizado.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Agendamento'
+      '401': *id002
+      '403': *id006
+      '404': *id005
+      '409': *id007
+      '500': *id003
+    security: *id004
+    parameters:
+    - *id008
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgendamentoAtualizacao'
+  delete:
+    tags:
+    - Agendamentos
+    summary: Excluir agendamento
+    description: Apenas administrador. Só é permitido quando o status não é agendado nem confirmado.
+    responses:
+      '200':
+        description: Agendamento removido.
+        content:
+          application/json:
+            schema: *id001
+      '401': *id002
+      '403': *id006
+      '404': *id005
+      '409': *id007
+      '500': *id003
+    security: *id004
+    parameters:
+    - *id008

@@ -1,0 +1,31 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 7
+  paciente_id:
+    type: integer
+    example: 1
+  horario_id:
+    type: integer
+    example: 10
+  data_agendamento:
+    type: string
+    format: date-time
+  status:
+    type: string
+    enum:
+    - agendado
+    - confirmado
+    - cancelado
+    - realizado
+    - falta
+  motivo_cancelamento:
+    type: string
+    nullable: true
+required:
+- id
+- paciente_id
+- horario_id
+- data_agendamento
+- status

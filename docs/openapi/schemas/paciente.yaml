@@ -1,0 +1,32 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+  cpf:
+    type: string
+    minLength: 11
+    maxLength: 11
+    example: '12345678901'
+  nome:
+    type: string
+    example: Maria da Silva
+  email:
+    type: string
+    format: email
+    nullable: true
+  telefone:
+    type: string
+    maxLength: 15
+    example: '85999999999'
+  data_nascimento:
+    type: string
+    format: date
+    example: '1990-05-20'
+required:
+- id
+- cpf
+- nome
+- email
+- telefone
+- data_nascimento

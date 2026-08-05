@@ -1,0 +1,20 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+  nome:
+    type: string
+    example: Administrador UBS
+  email:
+    type: string
+    format: email
+    example: admin@ubs.local
+  cargo:
+    type: string
+    nullable: true
+    example: Coordenador da UBS
+required:
+- id
+- nome
+- email

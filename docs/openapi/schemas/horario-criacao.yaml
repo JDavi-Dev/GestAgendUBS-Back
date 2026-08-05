@@ -1,0 +1,22 @@
+type: object
+properties:
+  profissional_id:
+    type: integer
+  data:
+    type: string
+    format: date
+  hora_inicio:
+    type: string
+    format: time
+  hora_fim:
+    type: string
+    format: time
+  disponivel:
+    type: boolean
+    default: true
+required:
+- profissional_id
+- data
+- hora_inicio
+- hora_fim
+- disponivel

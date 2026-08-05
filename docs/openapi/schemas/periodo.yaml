@@ -1,0 +1,8 @@
+type: object
+properties:
+  inicio:
+    type: string
+    format: date
+  fim:
+    type: string
+    format: date

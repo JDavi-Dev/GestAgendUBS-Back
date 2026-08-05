@@ -1,0 +1,10 @@
+type: object
+properties:
+  mensagem:
+    type: string
+  access_token:
+    type: string
+  refresh_token:
+    type: string
+  credencial:
+    $ref: '#/components/schemas/CredencialPublica'
